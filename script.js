@@ -4,23 +4,15 @@ async function loadPatientData() {
 
     const response = await fetch('./data/patients.json');
 
-    if (!response.ok) {
-      throw new Error("JSON file not found");
-    }
-
     const data = await response.json();
 
-    console.log(data);
+    console.log("FULL DATA:", data);
 
     const patient = data.find(
-      p => p.name === "Jessica Taylor"
+      item => item.name === "Jessica Taylor"
     );
 
-    console.log(patient);
-
-    if (!patient) {
-      throw new Error("Jessica Taylor not found");
-    }
+    console.log("PATIENT:", patient);
 
     /* PROFILE */
 
@@ -45,7 +37,7 @@ async function loadPatientData() {
     document.getElementById("insurance").innerText =
       patient.insurance_type;
 
-    /* LATEST STATS */
+    /* LATEST HEALTH DATA */
 
     const latest = patient.diagnosis_history[0];
 
@@ -58,36 +50,32 @@ async function loadPatientData() {
     document.getElementById("heart").innerText =
       latest.heart_rate.value + " bpm";
 
-    /* DIAGNOSTIC LIST */
+    /* DIAGNOSTIC TABLE */
 
     const table =
       document.getElementById("diagnosticTable");
 
     patient.diagnostic_list.forEach(item => {
 
-      const row = `
+      table.innerHTML += `
         <tr>
           <td>${item.name}</td>
           <td>${item.description}</td>
           <td>${item.status}</td>
         </tr>
       `;
-
-      table.innerHTML += row;
     });
 
     /* LAB RESULTS */
 
-    const labResults =
+    const lab =
       document.getElementById("labResults");
 
     patient.lab_results.forEach(item => {
 
-      const li = document.createElement("li");
-
-      li.innerText = item;
-
-      labResults.appendChild(li);
+      lab.innerHTML += `
+        <li>${item}</li>
+      `;
     });
 
     /* CHART */
@@ -114,7 +102,7 @@ async function loadPatientData() {
 
     new Chart(ctx, {
 
-      type: "line",
+      type: 'line',
 
       data: {
 
@@ -123,21 +111,19 @@ async function loadPatientData() {
         datasets: [
 
           {
-            label: "Systolic",
+            label: 'Systolic',
             data: systolic,
-            borderColor: "#E66FD2",
-            backgroundColor: "#E66FD2",
-            tension: 0.4,
-            fill: false
+            borderColor: '#E66FD2',
+            backgroundColor: '#E66FD2',
+            tension: 0.4
           },
 
           {
-            label: "Diastolic",
+            label: 'Diastolic',
             data: diastolic,
-            borderColor: "#8C6FE6",
-            backgroundColor: "#8C6FE6",
-            tension: 0.4,
-            fill: false
+            borderColor: '#8C6FE6',
+            backgroundColor: '#8C6FE6',
+            tension: 0.4
           }
 
         ]
@@ -148,23 +134,7 @@ async function loadPatientData() {
 
         responsive: true,
 
-        maintainAspectRatio: false,
-
-        plugins: {
-
-          legend: {
-            position: "top"
-          }
-
-        },
-
-        scales: {
-
-          y: {
-            beginAtZero: false
-          }
-
-        }
+        maintainAspectRatio: false
 
       }
 
@@ -172,11 +142,9 @@ async function loadPatientData() {
 
   }
 
-  catch (error) {
+  catch(error) {
 
     console.error(error);
-
-    alert("Error loading patient data. Check console.");
 
   }
 
