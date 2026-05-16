@@ -4,170 +4,181 @@ async function loadPatientData() {
 
     const response = await fetch('./data/patients.json');
 
+    if (!response.ok) {
+      throw new Error("JSON file not found");
+    }
+
     const data = await response.json();
 
+    console.log(data);
+
     const patient = data.find(
-      item => item.name === "Jessica Taylor"
+      p => p.name === "Jessica Taylor"
     );
 
-    displayProfile(patient);
-    displayStats(patient);
-    displayDiagnosticList(patient);
-    displayLabResults(patient);
-    createChart(patient);
+    console.log(patient);
 
-  }
+    if (!patient) {
+      throw new Error("Jessica Taylor not found");
+    }
 
-  catch (error) {
-    console.error("Error loading patient data:", error);
-  }
+    /* PROFILE */
 
-}
+    document.getElementById("profileImage").src =
+      patient.profile_picture;
 
-/* Profile */
+    document.getElementById("name").innerText =
+      patient.name;
 
-function displayProfile(patient) {
+    document.getElementById("dob").innerText =
+      patient.date_of_birth;
 
-  document.getElementById('profileImage').src =
-    patient.profile_picture;
+    document.getElementById("gender").innerText =
+      patient.gender;
 
-  document.getElementById('name').innerText =
-    patient.name;
+    document.getElementById("phone").innerText =
+      patient.phone_number;
 
-  document.getElementById('dob').innerText =
-    patient.date_of_birth;
+    document.getElementById("emergency").innerText =
+      patient.emergency_contact;
 
-  document.getElementById('gender').innerText =
-    patient.gender;
+    document.getElementById("insurance").innerText =
+      patient.insurance_type;
 
-  document.getElementById('phone').innerText =
-    patient.phone_number;
+    /* LATEST STATS */
 
-  document.getElementById('emergency').innerText =
-    patient.emergency_contact;
+    const latest = patient.diagnosis_history[0];
 
-  document.getElementById('insurance').innerText =
-    patient.insurance_type;
-}
+    document.getElementById("respiratory").innerText =
+      latest.respiratory_rate.value + " bpm";
 
-/* Stats */
+    document.getElementById("temperature").innerText =
+      latest.temperature.value + "°F";
 
-function displayStats(patient) {
+    document.getElementById("heart").innerText =
+      latest.heart_rate.value + " bpm";
 
-  const latest = patient.diagnosis_history[0];
+    /* DIAGNOSTIC LIST */
 
-  document.getElementById('respiratory').innerText =
-    latest.respiratory_rate.value + " bpm";
+    const table =
+      document.getElementById("diagnosticTable");
 
-  document.getElementById('temperature').innerText =
-    latest.temperature.value + "°F";
+    patient.diagnostic_list.forEach(item => {
 
-  document.getElementById('heart').innerText =
-    latest.heart_rate.value + " bpm";
-}
+      const row = `
+        <tr>
+          <td>${item.name}</td>
+          <td>${item.description}</td>
+          <td>${item.status}</td>
+        </tr>
+      `;
 
-/* Diagnostic List */
+      table.innerHTML += row;
+    });
 
-function displayDiagnosticList(patient) {
+    /* LAB RESULTS */
 
-  const table =
-    document.getElementById('diagnosticTable');
+    const labResults =
+      document.getElementById("labResults");
 
-  patient.diagnostic_list.forEach(item => {
+    patient.lab_results.forEach(item => {
 
-    table.innerHTML += `
-      <tr>
-        <td>${item.name}</td>
-        <td>${item.description}</td>
-        <td>${item.status}</td>
-      </tr>
-    `;
-  });
-}
+      const li = document.createElement("li");
 
-/* Lab Results */
+      li.innerText = item;
 
-function displayLabResults(patient) {
+      labResults.appendChild(li);
+    });
 
-  const lab =
-    document.getElementById('labResults');
+    /* CHART */
 
-  patient.lab_results.forEach(item => {
+    const history =
+      patient.diagnosis_history
+      .slice(0, 6)
+      .reverse();
 
-    lab.innerHTML += `
-      <li>${item}</li>
-    `;
-  });
-}
+    const labels = history.map(item =>
+      `${item.month} ${item.year}`
+    );
 
-/* Chart */
+    const systolic = history.map(item =>
+      item.blood_pressure.systolic.value
+    );
 
-function createChart(patient) {
+    const diastolic = history.map(item =>
+      item.blood_pressure.diastolic.value
+    );
 
-  const history =
-    patient.diagnosis_history.slice(0, 6).reverse();
+    const ctx =
+      document.getElementById("bpChart");
 
-  const labels = history.map(
-    item => `${item.month} ${item.year}`
-  );
+    new Chart(ctx, {
 
-  const systolic = history.map(
-    item => item.blood_pressure.systolic.value
-  );
+      type: "line",
 
-  const diastolic = history.map(
-    item => item.blood_pressure.diastolic.value
-  );
+      data: {
 
-  const ctx =
-    document.getElementById('bpChart');
+        labels: labels,
 
-  new Chart(ctx, {
+        datasets: [
 
-    type: 'line',
+          {
+            label: "Systolic",
+            data: systolic,
+            borderColor: "#E66FD2",
+            backgroundColor: "#E66FD2",
+            tension: 0.4,
+            fill: false
+          },
 
-    data: {
+          {
+            label: "Diastolic",
+            data: diastolic,
+            borderColor: "#8C6FE6",
+            backgroundColor: "#8C6FE6",
+            tension: 0.4,
+            fill: false
+          }
 
-      labels: labels,
+        ]
 
-      datasets: [
+      },
 
-        {
-          label: 'Systolic',
-          data: systolic,
-          borderColor: '#E66FD2',
-          backgroundColor: '#E66FD2',
-          tension: 0.4
+      options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+          legend: {
+            position: "top"
+          }
+
         },
 
-        {
-          label: 'Diastolic',
-          data: diastolic,
-          borderColor: '#8C6FE6',
-          backgroundColor: '#8C6FE6',
-          tension: 0.4
-        }
+        scales: {
 
-      ]
-    },
+          y: {
+            beginAtZero: false
+          }
 
-    options: {
-
-      responsive: true,
-
-      maintainAspectRatio: false,
-
-      plugins: {
-
-        legend: {
-          position: 'top'
         }
 
       }
 
-    }
+    });
 
-  });
+  }
+
+  catch (error) {
+
+    console.error(error);
+
+    alert("Error loading patient data. Check console.");
+
+  }
 
 }
 
