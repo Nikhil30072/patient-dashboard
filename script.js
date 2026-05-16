@@ -1,56 +1,77 @@
-const API_URL = "https://fedskillstest.coalitiontechnologies.workers.dev";
-
-const username = "coalition";
-const password = "skills-test";
-
-const auth = btoa(`${username}:${password}`);
-
-async function fetchPatientData() {
+async function loadPatientData() {
 
   try {
 
-    const response = await fetch(API_URL, {
-      headers: {
-        Authorization: `Basic ${auth}`
-      }
-    });
+    const response = await fetch('./data/patients.json');
 
     const data = await response.json();
 
     const patient = data.find(
-      p => p.name === "Jessica Taylor"
+      item => item.name === "Jessica Taylor"
     );
 
-    loadPatientProfile(patient);
-    loadDiagnostics(patient);
-    loadChart(patient);
+    displayProfile(patient);
+    displayStats(patient);
+    displayDiagnosticList(patient);
+    displayLabResults(patient);
+    createChart(patient);
 
-  } catch (error) {
-    console.error("Error fetching data:", error);
   }
+
+  catch (error) {
+    console.error("Error loading patient data:", error);
+  }
+
 }
 
-function loadPatientProfile(patient){
+/* Profile */
 
-  document.getElementById("profilePicture").src =
+function displayProfile(patient) {
+
+  document.getElementById('profileImage').src =
     patient.profile_picture;
 
-  document.getElementById("patientName").innerText =
+  document.getElementById('name').innerText =
     patient.name;
 
-  document.getElementById("patientDOB").innerText =
-    `DOB: ${patient.date_of_birth}`;
+  document.getElementById('dob').innerText =
+    patient.date_of_birth;
 
-  document.getElementById("patientGender").innerText =
-    `Gender: ${patient.gender}`;
+  document.getElementById('gender').innerText =
+    patient.gender;
 
-  document.getElementById("patientPhone").innerText =
-    `Phone: ${patient.phone_number}`;
+  document.getElementById('phone').innerText =
+    patient.phone_number;
+
+  document.getElementById('emergency').innerText =
+    patient.emergency_contact;
+
+  document.getElementById('insurance').innerText =
+    patient.insurance_type;
 }
 
-function loadDiagnostics(patient){
+/* Stats */
 
-  const table = document.getElementById("diagnosticTable");
+function displayStats(patient) {
+
+  const latest = patient.diagnosis_history[0];
+
+  document.getElementById('respiratory').innerText =
+    latest.respiratory_rate.value + " bpm";
+
+  document.getElementById('temperature').innerText =
+    latest.temperature.value + "°F";
+
+  document.getElementById('heart').innerText =
+    latest.heart_rate.value + " bpm";
+}
+
+/* Diagnostic List */
+
+function displayDiagnosticList(patient) {
+
+  const table =
+    document.getElementById('diagnosticTable');
 
   patient.diagnostic_list.forEach(item => {
 
@@ -64,48 +85,90 @@ function loadDiagnostics(patient){
   });
 }
 
-function loadChart(patient){
+/* Lab Results */
 
-  const diagnosisHistory = patient.diagnosis_history;
+function displayLabResults(patient) {
 
-  const labels = diagnosisHistory.map(item =>
-    `${item.month} ${item.year}`
-  );
+  const lab =
+    document.getElementById('labResults');
 
-  const systolicData = diagnosisHistory.map(item =>
-    item.blood_pressure.systolic.value
-  );
+  patient.lab_results.forEach(item => {
 
-  const diastolicData = diagnosisHistory.map(item =>
-    item.blood_pressure.diastolic.value
-  );
-
-  const ctx = document.getElementById("bpChart");
-
-  new Chart(ctx, {
-    type: "line",
-    data: {
-      labels,
-      datasets: [
-        {
-          label: "Systolic",
-          data: systolicData,
-          borderColor: "#e66fd2",
-          tension: 0.4
-        },
-        {
-          label: "Diastolic",
-          data: diastolicData,
-          borderColor: "#8c6fe6",
-          tension: 0.4
-        }
-      ]
-    },
-    options: {
-      responsive:true,
-      maintainAspectRatio:false
-    }
+    lab.innerHTML += `
+      <li>${item}</li>
+    `;
   });
 }
 
-fetchPatientData();
+/* Chart */
+
+function createChart(patient) {
+
+  const history =
+    patient.diagnosis_history.slice(0, 6).reverse();
+
+  const labels = history.map(
+    item => `${item.month} ${item.year}`
+  );
+
+  const systolic = history.map(
+    item => item.blood_pressure.systolic.value
+  );
+
+  const diastolic = history.map(
+    item => item.blood_pressure.diastolic.value
+  );
+
+  const ctx =
+    document.getElementById('bpChart');
+
+  new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+
+      labels: labels,
+
+      datasets: [
+
+        {
+          label: 'Systolic',
+          data: systolic,
+          borderColor: '#E66FD2',
+          backgroundColor: '#E66FD2',
+          tension: 0.4
+        },
+
+        {
+          label: 'Diastolic',
+          data: diastolic,
+          borderColor: '#8C6FE6',
+          backgroundColor: '#8C6FE6',
+          tension: 0.4
+        }
+
+      ]
+    },
+
+    options: {
+
+      responsive: true,
+
+      maintainAspectRatio: false,
+
+      plugins: {
+
+        legend: {
+          position: 'top'
+        }
+
+      }
+
+    }
+
+  });
+
+}
+
+loadPatientData();

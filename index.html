@@ -1,76 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Patient Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link rel="stylesheet" href="style.css">
+  <title>Healthcare Dashboard</title>
+
+  <link rel="stylesheet" href="style.css" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
-<div class="container">
+  <div class="dashboard">
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <h2 class="logo">Tech.Care</h2>
+    <!-- Sidebar -->
+    <aside class="sidebar">
 
-    <div class="patient active">
-      <img src="https://randomuser.me/api/portraits/women/44.jpg">
-      <div>
-        <h4>Jessica Taylor</h4>
-        <p>Female, 28</p>
+      <div class="logo">
+        <h2>Tech.Care</h2>
       </div>
-    </div>
-  </aside>
 
-  <!-- Main Content -->
-  <main class="main-content">
-
-    <header class="topbar">
-      <h1>Diagnosis History</h1>
-    </header>
-
-    <!-- Patient Profile -->
-    <section class="profile-card">
-      <img id="profilePicture">
-      <div>
-        <h2 id="patientName"></h2>
-        <p id="patientDOB"></p>
-        <p id="patientGender"></p>
-        <p id="patientPhone"></p>
+      <div class="patients-title">
+        <h3>Patients</h3>
       </div>
-    </section>
 
-    <!-- Diagnosis Chart -->
-    <section class="chart-card">
-      <h2>Blood Pressure</h2>
-      <canvas id="bpChart"></canvas>
-    </section>
+      <div class="patient-list">
 
-    <!-- Diagnostic List -->
-    <section class="diagnostic-card">
-      <h2>Diagnostic List</h2>
+        <div class="patient active">
+          <img
+            src="https://fedskillstest.ct.digital/4.png"
+            alt="Jessica">
 
-      <table>
-        <thead>
-          <tr>
-            <th>Problem</th>
-            <th>Description</th>
-            <th>Status</th>
-          </tr>
-        </thead>
+          <div>
+            <h4>Jessica Taylor</h4>
+            <p>Female, 28</p>
+          </div>
+        </div>
 
-        <tbody id="diagnosticTable"></tbody>
-      </table>
-    </section>
+      </div>
 
-  </main>
+    </aside>
 
-</div>
+    <!-- Main -->
+    <main class="main-content">
 
-<script src="script.js"></script>
+      <!-- Header -->
+      <header class="header">
+        <h2>Diagnosis History</h2>
+      </header>
+
+      <!-- Top Cards -->
+      <section class="top-section">
+
+        <!-- Chart -->
+        <div class="chart-container">
+
+          <div class="chart-header">
+            <h3>Blood Pressure</h3>
+            <p>Last 6 Months</p>
+          </div>
+
+          <canvas id="bpChart"></canvas>
+
+        </div>
+
+        <!-- Profile -->
+        <div class="profile-card">
+
+          <img id="profileImage">
+
+          <h2 id="name"></h2>
+
+          <div class="info">
+            <p><strong>Date Of Birth:</strong></p>
+            <span id="dob"></span>
+          </div>
+
+          <div class="info">
+            <p><strong>Gender:</strong></p>
+            <span id="gender"></span>
+          </div>
+
+          <div class="info">
+            <p><strong>Phone:</strong></p>
+            <span id="phone"></span>
+          </div>
+
+          <div class="info">
+            <p><strong>Emergency Contact:</strong></p>
+            <span id="emergency"></span>
+          </div>
+
+          <div class="info">
+            <p><strong>Insurance:</strong></p>
+            <span id="insurance"></span>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- Stats -->
+      <section class="stats-section">
+
+        <div class="stat-card respiratory">
+          <h4>Respiratory Rate</h4>
+          <h2 id="respiratory"></h2>
+          <p>Normal</p>
+        </div>
+
+        <div class="stat-card temperature">
+          <h4>Temperature</h4>
+          <h2 id="temperature"></h2>
+          <p>Normal</p>
+        </div>
+
+        <div class="stat-card heart">
+          <h4>Heart Rate</h4>
+          <h2 id="heart"></h2>
+          <p>Lower than Average</p>
+        </div>
+
+      </section>
+
+      <!-- Diagnostic List -->
+      <section class="diagnostic-section">
+
+        <div class="section-header">
+          <h3>Diagnostic List</h3>
+        </div>
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Problem / Diagnosis</th>
+              <th>Description</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody id="diagnosticTable"></tbody>
+
+        </table>
+
+      </section>
+
+      <!-- Lab Results -->
+      <section class="lab-section">
+
+        <div class="section-header">
+          <h3>Lab Results</h3>
+        </div>
+
+        <ul id="labResults"></ul>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="script.js"></script>
+
 </body>
+
 </html>
