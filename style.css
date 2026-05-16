@@ -1,0 +1,95 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#f6f7fb;
+}
+
+.container{
+  display:flex;
+  min-height:100vh;
+}
+
+/* Sidebar */
+
+.sidebar{
+  width:250px;
+  background:white;
+  padding:20px;
+  border-right:1px solid #ddd;
+}
+
+.logo{
+  color:#00c9a7;
+  margin-bottom:30px;
+}
+
+.patient{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px;
+  border-radius:10px;
+}
+
+.patient img{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+}
+
+.active{
+  background:#d9fff6;
+}
+
+/* Main */
+
+.main-content{
+  flex:1;
+  padding:20px;
+}
+
+.topbar{
+  margin-bottom:20px;
+}
+
+.profile-card,
+.chart-card,
+.diagnostic-card{
+  background:white;
+  padding:20px;
+  border-radius:20px;
+  margin-bottom:20px;
+}
+
+.profile-card{
+  display:flex;
+  gap:20px;
+  align-items:center;
+}
+
+.profile-card img{
+  width:120px;
+  border-radius:50%;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+
+table th,
+table td{
+  padding:12px;
+  border-bottom:1px solid #ddd;
+  text-align:left;
+}
+
+.chart-card{
+  height:400px;
+}

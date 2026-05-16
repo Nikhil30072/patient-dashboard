@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Patient Dashboard</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2 class="logo">Tech.Care</h2>
+
+    <div class="patient active">
+      <img src="https://randomuser.me/api/portraits/women/44.jpg">
+      <div>
+        <h4>Jessica Taylor</h4>
+        <p>Female, 28</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <header class="topbar">
+      <h1>Diagnosis History</h1>
+    </header>
+
+    <!-- Patient Profile -->
+    <section class="profile-card">
+      <img id="profilePicture">
+      <div>
+        <h2 id="patientName"></h2>
+        <p id="patientDOB"></p>
+        <p id="patientGender"></p>
+        <p id="patientPhone"></p>
+      </div>
+    </section>
+
+    <!-- Diagnosis Chart -->
+    <section class="chart-card">
+      <h2>Blood Pressure</h2>
+      <canvas id="bpChart"></canvas>
+    </section>
+
+    <!-- Diagnostic List -->
+    <section class="diagnostic-card">
+      <h2>Diagnostic List</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Problem</th>
+            <th>Description</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody id="diagnosticTable"></tbody>
+      </table>
+    </section>
+
+  </main>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
