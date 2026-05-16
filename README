@@ -1,0 +1,90 @@
+Patient Dashboard - Coalition Technologies Skills Test
+
+Overview
+
+This project is a responsive healthcare dashboard created from the Adobe XD design provided in the Coalition Technologies skills assessment.
+
+The dashboard displays patient information for **Jessica Taylor** using the provided patient dataset and visualizes diagnosis history using Chart.js.
+
+--> Technologies Used
+
+- HTML5
+- CSS3
+- JavaScript (ES6)
+- Chart.js
+
+--> Features
+
+- Responsive healthcare dashboard
+- Patient profile information
+- Blood pressure line chart
+- Respiratory rate card
+- Temperature card
+- Heart rate card
+- Diagnostic list table
+- Lab results section
+- Clean and modular code structure
+
+--> Project Structure
+
+bash
+patient-dashboard/
+│
+├── index.html
+├── style.css
+├── script.js
+├── README.md
+├── data/
+│   └── patients.json
+How to Run the Project
+1. Open the Project Folder
+
+Open the project folder in Visual Studio Code.
+
+2. Install Live Server Extension
+
+Install the Live Server extension in VS Code.
+
+Extension:
+
+Live Server by Ritwick Dey
+3. Start the Project
+
+Right click on:
+
+index.html
+
+Select:
+
+Open with Live Server
+
+The project will open in your browser.
+
+Example:
+
+http://127.0.0.1:5500/index.html
+Important Notes
+The project only displays data for Jessica Taylor as instructed in the assessment.
+Chart visualization is implemented using Chart.js.
+Patient data is loaded from a local JSON file.
+No unnecessary UI interactions were implemented to stay aligned with assessment requirements.
+Data Source
+
+Patient data is stored locally in:
+
+data/patients.json
+Design Reference
+
+Adobe XD Template:
+
+https://xd.adobe.com/view/3f9ab587-7536-4db8-a7dd-64d474e10867-6ac9/?hints=off
+
+API Reference
+
+Coalition Technologies Patient Data API:
+
+https://documenter.getpostman.com/view/11861104/2sA35G42ve
+
+Author
+
+Nikhil Abboju
